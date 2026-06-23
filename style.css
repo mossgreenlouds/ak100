@@ -366,7 +366,7 @@ h2 {
 }
 
 .mix-title-stack.has-title-image {
-  width: min(100%, 390px);
+  width: min(100%, 320px);
   align-items: flex-start;
   margin-left: 0;
 }
@@ -400,8 +400,8 @@ h2 {
 
 .mix-title-image {
   width: 100%;
-  max-width: 390px;
-  height: clamp(42px, 5.6vw, 68px);
+  max-width: 320px;
+  height: clamp(34px, 4.5vw, 52px);
   max-height: none;
   object-fit: contain;
   object-position: left center;
@@ -418,9 +418,9 @@ h2 {
 }
 
 .mix-title-image.is-dreamz-title {
-  width: calc(100% + 14px);
-  max-width: 404px;
-  transform: translateX(-14px);
+  width: calc(100% + 10px);
+  max-width: 330px;
+  transform: translateX(-10px);
 }
 
 .mix-subtitle {
@@ -958,7 +958,7 @@ footer {
 
   .mix-title-stack.has-title-image {
     margin-left: 0;
-    width: min(100%, 300px);
+    width: min(100%, 240px);
   }
 
   .mix-body h3 {
@@ -974,14 +974,14 @@ footer {
   }
 
   .mix-title-image {
-    max-width: 300px;
-    height: clamp(40px, 13vw, 56px);
+    max-width: 240px;
+    height: clamp(32px, 10vw, 44px);
   }
 
   .mix-title-image.is-dreamz-title {
-    width: calc(100% + 10px);
-    max-width: 310px;
-    transform: translateX(-10px);
+    width: calc(100% + 8px);
+    max-width: 248px;
+    transform: translateX(-8px);
   }
 
   .gallery,
