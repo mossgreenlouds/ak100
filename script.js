@@ -27,7 +27,6 @@ const mixes = [
     cover: "assets/img/mix_dreamz.jpg",
     genre: "黒昼夢",
     date: "2025.04.17",
-    subtitle: "DJ YAMINO'S VINYL COLLECTION",
     titleImage: "assets/img/dreamz_inverted.png",
     tracklist: `01 Smog / The Miracles
 02 I Feel Like Loving You Today / Donald Byrd feat. Isaac Hayes
@@ -51,7 +50,6 @@ const mixes = [
     cover: "assets/img/mix_da_finest_cover.jpg",
     genre: "Hip Hop",
     date: "2024.03.03",
-    subtitle: "DJ YAMINO'S VINYL COLLECTION",
     titleImage: "assets/img/finest_inverted.png",
     tracklist: `01 Dedicated / The Anonymous
 02 Methodman PLO Freestyle / Mathematics
@@ -242,7 +240,6 @@ function buildMixes() {
         <div class="mix-title-row">
           <div class="mix-title-stack ${mix.titleImage ? "has-title-image" : ""}">
             <h3>${mix.titleImage ? `<img class="mix-title-image ${mix.title === "dreamz" ? "is-dreamz-title" : ""} ${mix.title === "DA FINEST" ? "is-finest-title" : ""}" src="${mix.titleImage}" alt="${mix.title}">` : escapeHtml(mix.title)}</h3>
-            ${mix.subtitle ? `<div class="mix-subtitle">${escapeHtml(mix.subtitle)}</div>` : ""}
           </div>
           <div class="mix-meta">
             ${mix.genre ? `<div class="genre">${escapeHtml(mix.genre)}</div>` : ""}

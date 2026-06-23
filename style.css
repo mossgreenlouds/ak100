@@ -370,7 +370,7 @@ h2 {
   max-width: 100%;
   align-items: flex-start;
   margin-left: 0;
-  --vinyl-white-width: clamp(226px, 19vw, 252px);
+  --mix-title-image-height: clamp(30px, 3.2vw, 40px);
 }
 
 .mix-body h3 {
@@ -401,9 +401,9 @@ h2 {
 }
 
 .mix-title-image {
-  width: calc(var(--vinyl-white-width) / .856);
+  width: auto;
+  height: calc(var(--mix-title-image-height) / .87);
   max-width: 100%;
-  height: auto;
   object-fit: contain;
   object-position: left center;
   background: transparent;
@@ -418,30 +418,15 @@ h2 {
 }
 
 .mix-title-image.is-dreamz-title {
-  width: calc(var(--vinyl-white-width) / .856);
+  height: calc(var(--mix-title-image-height) / .87);
   max-width: 100%;
-  transform: translateX(calc(var(--vinyl-white-width) * -.0783));
+  transform: translateX(calc(var(--mix-title-image-height) * -.26));
 }
 
 .mix-title-image.is-finest-title {
-  width: calc(var(--vinyl-white-width) / .9794);
+  height: calc(var(--mix-title-image-height) / .9392);
   max-width: 100%;
-  transform: translateX(calc(var(--vinyl-white-width) * -.0078));
-}
-
-.mix-subtitle {
-  margin-top: 7px;
-  color: rgba(241, 237, 223, .62);
-  font-size: clamp(9px, .72vw, 10px);
-  letter-spacing: .015em;
-  line-height: 1.1;
-  white-space: nowrap;
-}
-
-.has-title-image .mix-subtitle {
-  width: var(--vinyl-white-width);
-  text-align: left;
-  max-width: 100%;
+  transform: translateX(calc(var(--mix-title-image-height) * -.022));
 }
 
 .mix-meta {
@@ -968,7 +953,7 @@ footer {
     margin-left: 0;
     width: fit-content;
     max-width: 100%;
-    --vinyl-white-width: clamp(208px, 64vw, 238px);
+    --mix-title-image-height: clamp(26px, 8.6vw, 34px);
   }
 
   .mix-body h3 {
@@ -984,21 +969,21 @@ footer {
   }
 
   .mix-title-image {
-    width: calc(var(--vinyl-white-width) / .856);
+    width: auto;
+    height: calc(var(--mix-title-image-height) / .87);
     max-width: 100%;
-    height: auto;
   }
 
   .mix-title-image.is-dreamz-title {
-    width: calc(var(--vinyl-white-width) / .856);
+    height: calc(var(--mix-title-image-height) / .87);
     max-width: 100%;
-    transform: translateX(calc(var(--vinyl-white-width) * -.0783));
+    transform: translateX(calc(var(--mix-title-image-height) * -.26));
   }
 
   .mix-title-image.is-finest-title {
-    width: calc(var(--vinyl-white-width) / .9794);
+    height: calc(var(--mix-title-image-height) / .9392);
     max-width: 100%;
-    transform: translateX(calc(var(--vinyl-white-width) * -.0078));
+    transform: translateX(calc(var(--mix-title-image-height) * -.022));
   }
 
   .gallery,
