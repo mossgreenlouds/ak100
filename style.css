@@ -661,12 +661,27 @@ footer {
   }
 
   .hero-inner {
-    grid-template-columns: 1fr;
-    align-items: start;
+    grid-template-columns: clamp(72px, 22vw, 112px) minmax(0, 1fr);
+    gap: clamp(12px, 4vw, 20px);
+    align-items: center;
   }
 
   .hero-logo {
-    width: 132px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: clamp(52px, 17vw, 78px);
+    white-space: nowrap;
+  }
+
+  .hero-title {
+    align-items: flex-start;
+    transform: none;
+  }
+
+  .hero-credit {
+    margin-right: 0;
   }
 
   .mix-section {
