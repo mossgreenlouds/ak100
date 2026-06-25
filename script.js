@@ -297,7 +297,7 @@ function buildGallery() {
     .map((name, index) => createPhotoItem(name, photoLimit + index, "mix-backdrop-item"))
     .join("");
   const mixSection = `
-    <section id="mix" class="art-item mix-section">
+    <section class="art-item mix-section">
       <div class="mix-backdrop" aria-hidden="true">
         ${mixBackdropPhotos}
       </div>
