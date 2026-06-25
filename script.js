@@ -135,6 +135,7 @@ const photos = window.AK100_PHOTOS || [];
 
 let dreamText = window.AK100_DREAM_TEXT || "";
 const dreamTextPath = "assets/text/夢境紀.txt";
+const imageRoot = "assets/img/";
 
 async function loadDreamText() {
   try {
@@ -164,6 +165,9 @@ const textShapes = [
   "text-xs", "text-s", "text-xs", "text-m", "text-s", "text-xs",
   "text-l", "text-xs", "text-m", "text-s", "text-xs", "text-xl"
 ];
+
+const textSpans = [2, 3, 3, 4, 5];
+const photoMotions = ["still", "slide-x", "slide-y", "slide-x", "still", "slide-x"];
 
 const mobileBreakpoint = 720;
 
@@ -221,6 +225,10 @@ function randomBetween(min, max) {
   return min + Math.random() * (max - min);
 }
 
+function galleryLimitSet() {
+  return galleryLimits[window.innerWidth < mobileBreakpoint ? "mobile" : "desktop"];
+}
+
 function mixCardClass(mix) {
   const variant = mixClassByTitle[mix.title];
   return variant ? `mix-card ${variant}` : "mix-card";
@@ -239,7 +247,7 @@ function mixTitleImageClass(mix) {
 function renderMixTitle(mix) {
   if (!mix.titleImage) return escapeHtml(mix.title);
 
-  return `<img class="${mixTitleImageClass(mix)}" src="${escapeHtml(mix.titleImage)}" alt="${escapeHtml(mix.title)}">`;
+  return `<img class="${mixTitleImageClass(mix)}" src="${escapeHtml(mix.titleImage)}" alt="${escapeHtml(mix.title)}" decoding="async">`;
 }
 
 function mixTitleStackClass(mix) {
@@ -257,7 +265,7 @@ function buildMixes() {
   mixGrid.innerHTML = mixes.map((mix) => `
     <article class="${mixCardClass(mix)}">
       <div class="mix-cover">
-        <img src="${escapeHtml(mix.cover)}" alt="${escapeHtml(mix.title)}">
+        <img src="${escapeHtml(mix.cover)}" alt="${escapeHtml(mix.title)}" loading="lazy" decoding="async">
       </div>
       <div class="mix-body">
         <div class="mix-title-row">
@@ -289,15 +297,14 @@ function buildMixes() {
 function buildGallery() {
   if (!gallery) return;
 
-  const isMobile = window.innerWidth < mobileBreakpoint;
-  const limits = galleryLimits[isMobile ? "mobile" : "desktop"];
+  const limits = galleryLimitSet();
   const photoLimit = Math.min(photos.length, limits.photoLimit);
   const photoPool = shuffle(photos);
   const shuffledPhotos = photoPool.slice(0, photoLimit);
   const shuffledFragments = shuffle(splitDreamText());
 
   const createTextItem = (fragment, index) => {
-    const textSpan = [2, 3, 3, 4, 5][index % 5];
+    const textSpan = textSpans[index % textSpans.length];
     const safeStart = 2 + ((index * 3) % (14 - textSpan));
     const textStyle = [
       `--text-start:${safeStart}`,
@@ -313,9 +320,9 @@ function buildGallery() {
   };
 
   const createPhotoItem = (name, index, className = "") => {
-    const src = `assets/img/${name}`;
+    const src = `${imageRoot}${name}`;
     const label = name.replace(/\.[^.]+$/, "");
-    const motion = ["still", "slide-x", "slide-y", "slide-x", "still", "slide-x"][index % 6];
+    const motion = photoMotions[index % photoMotions.length];
     const photoStyle = [
       `--lift:${randomBetween(-28, 28).toFixed(0)}px`,
       `--shift:${randomBetween(-24, 24).toFixed(0)}px`,
@@ -330,7 +337,7 @@ function buildGallery() {
     ].join(";");
     return `
       <div class="art-item photo-item ${className} ${photoShapes[index % photoShapes.length]} ${motion}" style="${photoStyle}" aria-label="${escapeHtml(label)}">
-        <img src="${escapeHtml(src)}" alt="${escapeHtml(label)}" loading="lazy">
+        <img src="${escapeHtml(src)}" alt="${escapeHtml(label)}" loading="lazy" decoding="async">
       </div>
     `;
   };
