@@ -2,13 +2,9 @@
 
 :root {
   color-scheme: dark;
-  --bg: #030303;
   --ink: #f1eddf;
-  --muted: #8f8774;
   --line: rgba(241, 237, 223, .16);
-  --panel: rgba(10, 10, 9, .82);
   --acid: #c8ff21;
-  --rust: #b8402b;
 }
 
 * {
@@ -118,25 +114,12 @@ a {
   }
 }
 
-.hero p,
-.section-head p {
-  margin: 0 0 10px;
-  color: var(--muted);
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-h1,
-h2 {
-  margin: 0;
-  font-weight: 500;
-  line-height: .92;
-}
-
 h1 {
+  margin: 0;
   font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
   font-size: clamp(78px, 18vw, 230px);
   font-weight: 900;
+  line-height: .92;
   text-shadow: 10px 9px 0 rgba(184, 64, 43, .24), -6px -4px 0 rgba(200, 255, 33, .08);
   opacity: 0;
   transform: translateY(18px);
@@ -171,22 +154,6 @@ h1 {
   object-fit: contain;
   object-position: center;
   filter: contrast(1.22) saturate(.82);
-}
-
-h2 {
-  font-size: clamp(42px, 9vw, 118px);
-}
-
-.listen-link,
-.text-link,
-.pdf-link {
-  display: inline-flex;
-  align-items: center;
-  min-height: 42px;
-  margin-top: 22px;
-  border-bottom: 1px solid currentColor;
-  color: var(--acid);
-  font-size: 13px;
 }
 
 .section {
@@ -239,11 +206,6 @@ h2 {
     radial-gradient(circle at 78% 62%, rgba(184, 64, 43, .2), transparent 24rem);
   mix-blend-mode: screen;
   opacity: .62;
-}
-
-.section-head {
-  width: min(1120px, 100%);
-  margin: 0 auto clamp(28px, 5vw, 64px);
 }
 
 .mix-grid {
@@ -488,12 +450,6 @@ audio {
   white-space: pre-wrap;
 }
 
-.pdf-link {
-  margin-top: 12px;
-  min-height: 28px;
-  color: var(--red);
-}
-
 .gallery {
   position: relative;
   z-index: 4;
@@ -506,62 +462,6 @@ audio {
   align-items: stretch;
   transform: translateX(-4vw);
   opacity: 1;
-}
-
-.text-field {
-  position: absolute;
-  z-index: 12;
-  inset: clamp(24px, 4vw, 64px) 0 clamp(24px, 4vw, 64px);
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.floating-text {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: min(var(--w), 82vw);
-  color: rgba(241, 237, 223, .92);
-  font-family: "Hiragino Mincho ProN", "Yu Mincho", serif;
-  font-size: var(--size);
-  font-weight: 700;
-  line-height: 1.18;
-  letter-spacing: 0;
-  opacity: 0;
-  text-shadow:
-    0 1px 0 rgba(0, 0, 0, .95),
-    0 0 16px rgba(0, 0, 0, .92),
-    0 0 22px rgba(200, 255, 33, .16);
-  animation: text-emerge var(--duration) linear var(--delay) infinite;
-}
-
-.floating-text::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: -4px -7px;
-  background: rgba(0, 0, 0, .28);
-  filter: blur(8px);
-}
-
-@keyframes text-emerge {
-  0%,
-  18%,
-  100% {
-    opacity: 0;
-    transform: translate3d(-10px, 0, 0);
-  }
-
-  26%,
-  46% {
-    opacity: .94;
-    transform: translate3d(0, 0, 0);
-  }
-
-  58% {
-    opacity: 0;
-    transform: translate3d(14px, 0, 0);
-  }
 }
 
 .gallery .photo-item {
@@ -693,12 +593,6 @@ audio {
   aspect-ratio: 1.35 / 1;
 }
 
-.chaos {
-  grid-column: span 8;
-  grid-row: span 2;
-  aspect-ratio: 2.1 / 1;
-}
-
 .needle {
   grid-column: span 2;
   grid-row: span 1;
@@ -809,58 +703,12 @@ audio {
   color: rgba(241, 237, 223, .94);
 }
 
-.text-giant {
-  justify-self: start;
-  font-size: clamp(26px, 4.4vw, 76px);
-  line-height: .9;
-  color: rgba(241, 237, 223, .9);
-}
-
-.text-vertical {
-  justify-self: start;
-  min-height: 120px;
-  font-size: clamp(14px, 1.8vw, 28px);
-}
-
 article {
   min-width: 0;
 }
 
 pre {
   font-family: inherit;
-}
-
-.lightbox {
-  position: fixed;
-  z-index: 50;
-  inset: 0;
-  display: none;
-  place-items: center;
-  padding: 64px 18px 18px;
-  background: rgba(0, 0, 0, .88);
-}
-
-.lightbox[aria-hidden="false"] {
-  display: grid;
-}
-
-.lightbox img {
-  max-width: 100%;
-  max-height: 88vh;
-  object-fit: contain;
-}
-
-.lightbox button {
-  position: absolute;
-  top: 14px;
-  right: 18px;
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--line);
-  background: rgba(9, 9, 7, .7);
-  color: var(--ink);
-  font-size: 28px;
-  cursor: pointer;
 }
 
 footer {
@@ -904,7 +752,6 @@ footer {
   }
 
   .wide,
-  .chaos,
   .panorama,
   .large {
     grid-column: span 8;
@@ -922,9 +769,6 @@ footer {
 
   .hero-inner {
     grid-template-columns: 1fr;
-  }
-
-  .hero-inner {
     align-items: start;
   }
 
@@ -932,12 +776,7 @@ footer {
     width: 132px;
   }
 
-  .mix-grid {
-    grid-template-columns: 1fr;
-  }
-
   .mix-section {
-    grid-column: 1 / -1;
     width: calc(100vw - 16px);
     max-width: calc(100vw - 16px);
     padding-top: clamp(8px, 4vw, 20px);
@@ -1012,7 +851,6 @@ footer {
   .small,
   .square,
   .wide,
-  .chaos,
   .needle,
   .slab,
   .panorama,
@@ -1037,18 +875,5 @@ footer {
     max-width: min(100%, calc(100vw - 18px));
     min-height: auto;
     transform: none;
-  }
-
-  .text-field {
-    inset: 18px 0;
-  }
-
-  .floating-text {
-    width: min(var(--w), 88vw);
-    font-size: clamp(14px, var(--size), 24px);
-  }
-
-  .text-vertical {
-    writing-mode: horizontal-tb;
   }
 }

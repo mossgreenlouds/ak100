@@ -147,43 +147,15 @@ async function loadDreamText() {
 }
 
 function splitDreamText() {
-  const parts = dreamText
+  return dreamText
     .split(/\n\s*\n/)
-    .map((part) => part.trim())
+    .flatMap((part) => part.split(/\n+/))
+    .map((line) => line.trim())
     .filter(Boolean);
-
-  return parts.flatMap((part) => {
-    const lineGroups = part
-      .split(/\n+/)
-      .map((line) => line.trim())
-      .filter(Boolean);
-    const sentences = lineGroups;
-
-    const fragments = [];
-    let index = 0;
-
-    while (index < sentences.length) {
-      const current = sentences[index];
-      const next = sentences[index + 1];
-      const compactHeading = current.length <= 14 && next && !/。$/.test(current);
-      const bundleSize = compactHeading
-        ? 2
-        : Math.min(sentences.length - index, Math.random() < .24 ? 2 : 1);
-
-      fragments.push(sentences.slice(index, index + bundleSize).join(" "));
-      index += bundleSize;
-    }
-
-    return fragments;
-  });
 }
 
 let mixGrid = document.querySelector("#mixGrid");
 const gallery = document.querySelector("#gallery");
-const textField = document.querySelector("#textField");
-const lightbox = document.querySelector("#lightbox");
-const lightboxImage = lightbox.querySelector("img");
-const closeLightbox = lightbox.querySelector("button");
 
 const photoShapes = [
   "wide", "small", "tall", "square", "needle", "wide", "small", "slab",
@@ -254,12 +226,13 @@ function buildMixes() {
 }
 
 function buildGallery() {
-  const items = [];
-  const photoLimit = Math.min(photos.length, window.innerWidth < 720 ? 34 : 64);
+  if (!gallery) return;
+
+  const isMobile = window.innerWidth < 720;
+  const photoLimit = Math.min(photos.length, isMobile ? 34 : 64);
   const photoPool = shuffle(photos);
   const shuffledPhotos = photoPool.slice(0, photoLimit);
-  const dreamFragments = splitDreamText();
-  const shuffledFragments = shuffle(dreamFragments);
+  const shuffledFragments = shuffle(splitDreamText());
 
   const createTextItem = (fragment, index) => {
     const textSpan = [2, 3, 3, 4, 5][index % 5];
@@ -313,13 +286,13 @@ function buildGallery() {
     }))
   ].sort((left, right) => left.order - right.order);
 
-  items.push(...distributedItems);
+  const items = [...distributedItems];
 
   const mixIndex = Math.min(
-    Math.max(window.innerWidth < 720 ? 32 : 42, Math.floor(items.length * .5)),
+    Math.max(isMobile ? 32 : 42, Math.floor(items.length * .5)),
     Math.max(0, items.length - 24)
   );
-  const mixBackdropPhotoCount = window.innerWidth < 720 ? 16 : 34;
+  const mixBackdropPhotoCount = isMobile ? 16 : 34;
   const mixBackdropPhotos = photoPool
     .slice(photoLimit, photoLimit + mixBackdropPhotoCount)
     .map((name, index) => createPhotoItem(name, photoLimit + index, "mix-backdrop-item"))
@@ -334,7 +307,7 @@ function buildGallery() {
   `;
   items.splice(mixIndex, 0, { type: "mix", html: mixSection });
 
-  const tailLimit = window.innerWidth < 720 ? 18 : 30;
+  const tailLimit = isMobile ? 18 : 30;
   const beforeAndMix = items.slice(0, mixIndex + 1);
   const tail = items.slice(mixIndex + 1);
   const visibleTail = [];
@@ -353,34 +326,7 @@ function buildGallery() {
   });
 
   gallery.innerHTML = [...beforeAndMix, ...visibleTail].map((item) => item.html).join("");
-  buildFloatingText();
-
-  gallery.addEventListener("click", (event) => {
-    const button = event.target.closest("[data-src]");
-    if (!button) return;
-    lightboxImage.src = button.dataset.src;
-    lightboxImage.alt = button.getAttribute("aria-label");
-    lightbox.setAttribute("aria-hidden", "false");
-  });
 }
-
-function buildFloatingText() {
-  if (!textField) return;
-  textField.innerHTML = "";
-}
-
-function hideLightbox() {
-  lightbox.setAttribute("aria-hidden", "true");
-  lightboxImage.removeAttribute("src");
-}
-
-closeLightbox.addEventListener("click", hideLightbox);
-lightbox.addEventListener("click", (event) => {
-  if (event.target === lightbox) hideLightbox();
-});
-window.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") hideLightbox();
-});
 
 async function initSite() {
   await loadDreamText();
