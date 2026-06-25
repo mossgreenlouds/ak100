@@ -165,15 +165,38 @@ const textShapes = [
   "text-l", "text-xs", "text-m", "text-s", "text-xs", "text-xl"
 ];
 
+const mobileBreakpoint = 720;
+
+const galleryLimits = {
+  desktop: {
+    photoLimit: 64,
+    mixIndexFloor: 42,
+    mixBackdropPhotoCount: 34,
+    tailPhotoLimit: 30
+  },
+  mobile: {
+    photoLimit: 34,
+    mixIndexFloor: 32,
+    mixBackdropPhotoCount: 16,
+    tailPhotoLimit: 18
+  }
+};
+
 const mixClassByTitle = {
   "my favorite shit": "is-my-favorite-shit",
   "夢境紀": "is-yumekyouki",
   "88.4MHz": "is-884mhz"
 };
 
-const titleStackClassByTitle = {
-  dreamz: "is-dreamz-stack",
-  "DA FINEST": "is-finest-stack"
+const titleClassesByTitle = {
+  dreamz: {
+    image: "is-dreamz-title",
+    stack: "is-dreamz-stack"
+  },
+  "DA FINEST": {
+    image: "is-finest-title",
+    stack: "is-finest-stack"
+  }
 };
 
 function escapeHtml(text) {
@@ -203,16 +226,27 @@ function mixCardClass(mix) {
   return variant ? `mix-card ${variant}` : "mix-card";
 }
 
+function titleClass(mix, type) {
+  const classes = titleClassesByTitle[mix.title];
+  return classes ? classes[type] : "";
+}
+
+function mixTitleImageClass(mix) {
+  const variant = titleClass(mix, "image");
+  return variant ? `mix-title-image ${variant}` : "mix-title-image";
+}
+
 function renderMixTitle(mix) {
   if (!mix.titleImage) return escapeHtml(mix.title);
 
-  return `<img class="mix-title-image" src="${escapeHtml(mix.titleImage)}" alt="${escapeHtml(mix.title)}">`;
+  return `<img class="${mixTitleImageClass(mix)}" src="${escapeHtml(mix.titleImage)}" alt="${escapeHtml(mix.title)}">`;
 }
 
 function mixTitleStackClass(mix) {
   const classes = ["mix-title-stack"];
   if (mix.titleImage) classes.push("has-title-image");
-  if (titleStackClassByTitle[mix.title]) classes.push(titleStackClassByTitle[mix.title]);
+  const variant = titleClass(mix, "stack");
+  if (variant) classes.push(variant);
   return classes.join(" ");
 }
 
@@ -255,8 +289,9 @@ function buildMixes() {
 function buildGallery() {
   if (!gallery) return;
 
-  const isMobile = window.innerWidth < 720;
-  const photoLimit = Math.min(photos.length, isMobile ? 34 : 64);
+  const isMobile = window.innerWidth < mobileBreakpoint;
+  const limits = galleryLimits[isMobile ? "mobile" : "desktop"];
+  const photoLimit = Math.min(photos.length, limits.photoLimit);
   const photoPool = shuffle(photos);
   const shuffledPhotos = photoPool.slice(0, photoLimit);
   const shuffledFragments = shuffle(splitDreamText());
@@ -294,8 +329,8 @@ function buildGallery() {
       `--z:${Math.floor(randomBetween(1, 7))}`
     ].join(";");
     return `
-      <div class="art-item photo-item ${className} ${photoShapes[index % photoShapes.length]} ${motion}" style="${photoStyle}" aria-label="${label}">
-        <img src="${src}" alt="${label}" loading="lazy">
+      <div class="art-item photo-item ${className} ${photoShapes[index % photoShapes.length]} ${motion}" style="${photoStyle}" aria-label="${escapeHtml(label)}">
+        <img src="${escapeHtml(src)}" alt="${escapeHtml(label)}" loading="lazy">
       </div>
     `;
   };
@@ -314,12 +349,11 @@ function buildGallery() {
   ].sort((left, right) => left.order - right.order);
 
   const mixIndex = Math.min(
-    Math.max(isMobile ? 32 : 42, Math.floor(items.length * .5)),
+    Math.max(limits.mixIndexFloor, Math.floor(items.length * .5)),
     Math.max(0, items.length - 24)
   );
-  const mixBackdropPhotoCount = isMobile ? 16 : 34;
   const mixBackdropPhotos = photoPool
-    .slice(photoLimit, photoLimit + mixBackdropPhotoCount)
+    .slice(photoLimit, photoLimit + limits.mixBackdropPhotoCount)
     .map((name, index) => createPhotoItem(name, photoLimit + index, "mix-backdrop-item"))
     .join("");
   const mixSection = `
@@ -332,7 +366,6 @@ function buildGallery() {
   `;
   items.splice(mixIndex, 0, { type: "mix", html: mixSection });
 
-  const tailLimit = isMobile ? 18 : 30;
   const beforeAndMix = items.slice(0, mixIndex + 1);
   const tail = items.slice(mixIndex + 1);
   const visibleTail = [];
@@ -344,7 +377,7 @@ function buildGallery() {
       return;
     }
 
-    if (tailPhotoCount < tailLimit) {
+    if (tailPhotoCount < limits.tailPhotoLimit) {
       visibleTail.push(item);
       tailPhotoCount += 1;
     }

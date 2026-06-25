@@ -220,10 +220,6 @@ h1 {
   overflow: visible;
 }
 
-.mix-backdrop .photo-item {
-  pointer-events: none;
-}
-
 .mix-card {
   min-width: 0;
   max-width: 100%;
@@ -264,9 +260,13 @@ h1 {
   overflow: hidden;
 }
 
-.mix-cover img {
+.mix-cover img,
+.photo-item img {
   width: 100%;
   height: 100%;
+}
+
+.mix-cover img {
   object-fit: contain;
 }
 
@@ -294,26 +294,11 @@ h1 {
 }
 
 .mix-title-stack.has-title-image {
-  --title-ratio: .856;
-  --title-shift: 0;
-  --subtitle-shift: 0;
-  --title-scale: 1;
   width: fit-content;
   max-width: 100%;
   align-items: flex-start;
   padding-bottom: var(--mix-title-image-bottom, clamp(6px, .8vw, 10px));
   --vinyl-white-width: clamp(226px, 19vw, 252px);
-}
-
-.is-dreamz-stack {
-  --title-shift: -.0783;
-  --subtitle-shift: -.0783;
-  --title-margin-bottom: -3px;
-}
-
-.is-finest-stack {
-  --title-ratio: .9794;
-  --title-shift: -.0078;
 }
 
 .mix-body h3 {
@@ -348,15 +333,23 @@ h1 {
 }
 
 .mix-title-image {
-  width: calc((var(--vinyl-white-width) / var(--title-ratio)) * var(--title-scale));
+  width: calc(var(--vinyl-white-width) / .856);
   max-width: 100%;
   height: auto;
-  margin-bottom: var(--title-margin-bottom, 0);
   object-fit: contain;
   object-position: left center;
   filter: grayscale(1) contrast(1.25);
   mix-blend-mode: screen;
-  transform: translateX(calc(var(--vinyl-white-width) * var(--title-shift)));
+}
+
+.mix-title-image.is-dreamz-title {
+  margin-bottom: -3px;
+  transform: translateX(calc(var(--vinyl-white-width) * -.0783));
+}
+
+.mix-title-image.is-finest-title {
+  width: calc(var(--vinyl-white-width) / .9794);
+  transform: translateX(calc(var(--vinyl-white-width) * -.0078));
 }
 
 .mix-subtitle {
@@ -369,10 +362,9 @@ h1 {
 }
 
 .has-title-image .mix-subtitle {
-  width: calc(var(--vinyl-white-width) * var(--title-scale));
+  width: var(--vinyl-white-width);
   text-align: center;
   max-width: 100%;
-  transform: translateX(calc(var(--vinyl-white-width) * var(--subtitle-shift)));
 }
 
 .mix-meta {
@@ -436,8 +428,6 @@ audio {
 }
 
 .photo-item img {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
   background: #111;
   filter: contrast(1.32) saturate(.58) brightness(var(--burn, .9));
@@ -731,8 +721,16 @@ footer {
     --vinyl-white-width: clamp(208px, 64vw, 238px);
   }
 
-  .is-finest-stack {
-    --title-scale: .86;
+  .is-dreamz-stack .mix-subtitle {
+    transform: translateX(calc(var(--vinyl-white-width) * -.0783));
+  }
+
+  .is-finest-stack .mix-title-image.is-finest-title {
+    width: calc((var(--vinyl-white-width) / .9794) * .86);
+  }
+
+  .is-finest-stack .mix-subtitle {
+    width: calc(var(--vinyl-white-width) * .86);
   }
 
   .mix-body h3 {
