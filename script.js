@@ -154,7 +154,6 @@ function splitDreamText() {
     .filter(Boolean);
 }
 
-let mixGrid = document.querySelector("#mixGrid");
 const gallery = document.querySelector("#gallery");
 
 const photoShapes = [
@@ -190,7 +189,7 @@ function randomBetween(min, max) {
 }
 
 function buildMixes() {
-  mixGrid = document.querySelector("#mixGrid");
+  const mixGrid = document.querySelector("#mixGrid");
   if (!mixGrid) return;
 
   mixGrid.innerHTML = mixes.map((mix) => `
@@ -298,7 +297,7 @@ function buildGallery() {
     .map((name, index) => createPhotoItem(name, photoLimit + index, "mix-backdrop-item"))
     .join("");
   const mixSection = `
-    <section id="mix" class="art-item mix-section mix-anchor">
+    <section id="mix" class="art-item mix-section">
       <div class="mix-backdrop" aria-hidden="true">
         ${mixBackdropPhotos}
       </div>
