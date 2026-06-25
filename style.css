@@ -108,6 +108,8 @@ h1 {
   font-size: clamp(78px, 18vw, 230px);
   font-weight: 900;
   line-height: .92;
+  text-align: right;
+  white-space: nowrap;
   text-shadow: 10px 9px 0 rgba(184, 64, 43, .24), -6px -4px 0 rgba(200, 255, 33, .08);
   opacity: 0;
   transform: translateY(18px);
@@ -637,8 +639,6 @@ footer {
 @media (max-width: 940px) {
   h1 {
     font-size: clamp(72px, 17vw, 160px);
-    text-align: right;
-    white-space: nowrap;
   }
 
   .hero-title {
@@ -677,22 +677,14 @@ footer {
   .hero-inner {
     grid-template-columns: clamp(72px, 22vw, 112px) minmax(0, 1fr);
     gap: clamp(12px, 4vw, 20px);
-    align-items: center;
   }
 
   .hero-logo {
-    width: 100%;
     filter: drop-shadow(clamp(5px, 2vw, 8px) clamp(5px, 2vw, 8px) 0 rgba(184, 64, 43, .22)) invert(.02);
   }
 
   h1 {
     font-size: clamp(52px, 17vw, 78px);
-    text-align: right;
-    white-space: nowrap;
-  }
-
-  .hero-title {
-    align-items: flex-end;
   }
 
   .mix-section {

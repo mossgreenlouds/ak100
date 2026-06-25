@@ -165,6 +165,17 @@ const textShapes = [
   "text-l", "text-xs", "text-m", "text-s", "text-xs", "text-xl"
 ];
 
+const mixClassByTitle = {
+  "my favorite shit": "is-my-favorite-shit",
+  "夢境紀": "is-yumekyouki",
+  "88.4MHz": "is-884mhz"
+};
+
+const titleImageClassByTitle = {
+  dreamz: "is-dreamz-title",
+  "DA FINEST": "is-finest-title"
+};
+
 function escapeHtml(text) {
   return text
     .replaceAll("&", "&amp;")
@@ -187,19 +198,35 @@ function randomBetween(min, max) {
   return min + Math.random() * (max - min);
 }
 
+function mixCardClass(mix) {
+  const variant = mixClassByTitle[mix.title];
+  return variant ? `mix-card ${variant}` : "mix-card";
+}
+
+function mixTitleImageClass(mix) {
+  const variant = titleImageClassByTitle[mix.title];
+  return variant ? `mix-title-image ${variant}` : "mix-title-image";
+}
+
+function renderMixTitle(mix) {
+  if (!mix.titleImage) return escapeHtml(mix.title);
+
+  return `<img class="${mixTitleImageClass(mix)}" src="${escapeHtml(mix.titleImage)}" alt="${escapeHtml(mix.title)}">`;
+}
+
 function buildMixes() {
   const mixGrid = document.querySelector("#mixGrid");
   if (!mixGrid) return;
 
   mixGrid.innerHTML = mixes.map((mix) => `
-    <article class="mix-card ${mix.title === "my favorite shit" ? "is-my-favorite-shit" : ""} ${mix.title === "夢境紀" ? "is-yumekyouki" : ""} ${mix.title === "88.4MHz" ? "is-884mhz" : ""}">
+    <article class="${mixCardClass(mix)}">
       <div class="mix-cover">
-        <img src="${mix.cover}" alt="${mix.title}">
+        <img src="${escapeHtml(mix.cover)}" alt="${escapeHtml(mix.title)}">
       </div>
       <div class="mix-body">
         <div class="mix-title-row">
           <div class="mix-title-stack ${mix.titleImage ? "has-title-image" : ""}">
-            <h3>${mix.titleImage ? `<img class="mix-title-image ${mix.title === "dreamz" ? "is-dreamz-title" : ""} ${mix.title === "DA FINEST" ? "is-finest-title" : ""}" src="${mix.titleImage}" alt="${mix.title}">` : escapeHtml(mix.title)}</h3>
+            <h3>${renderMixTitle(mix)}</h3>
             ${mix.subtitle ? `<div class="mix-subtitle">${escapeHtml(mix.subtitle)}</div>` : ""}
           </div>
           <div class="mix-meta">
@@ -207,7 +234,7 @@ function buildMixes() {
             ${mix.date ? `<time class="release-date">${escapeHtml(mix.date)}</time>` : ""}
           </div>
         </div>
-        <audio controls preload="metadata" src="${mix.audio}"></audio>
+        <audio controls preload="metadata" src="${escapeHtml(mix.audio)}"></audio>
         <pre class="tracklist">${escapeHtml(mix.tracklist)}</pre>
       </div>
     </article>
@@ -271,7 +298,7 @@ function buildGallery() {
     `;
   };
 
-  const distributedItems = [
+  const items = [
     ...shuffledPhotos.map((name, index) => ({
       type: "photo",
       order: (index + .5) / Math.max(shuffledPhotos.length, 1),
@@ -283,8 +310,6 @@ function buildGallery() {
       html: createTextItem(fragment, index)
     }))
   ].sort((left, right) => left.order - right.order);
-
-  const items = distributedItems;
 
   const mixIndex = Math.min(
     Math.max(isMobile ? 32 : 42, Math.floor(items.length * .5)),
